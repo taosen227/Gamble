@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <label class="col-12 text-center title">請輸入參加者姓名</label>
+        <mat-form-field *ngFor="let Name of Names;let i = index" class="col-12">
+            <mat-label>第{{i+1}}個參加者</mat-label>
+            <input matInput type="text" [(ngModel)]="Name.Name">
+            <button *ngIf="Name" matSuffix mat-icon-button aria-label="Clear" (click)="Name.Name=''">
+              <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button class="col-6" mat-raised-button color="primary" (click)="Save()">
+            儲存<i class="fa-solid fa-floppy-disk ms-2"></i>
+        </button>
+    </div>
+</div>

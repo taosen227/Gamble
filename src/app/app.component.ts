@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Gamble';
+  play:boolean = false;
+  click(){
+    this.play = !this.play;
+  }
 }

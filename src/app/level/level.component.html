@@ -1,0 +1,96 @@
+<div class="container-fluid p-0">
+    <div class="col-12 row m-0">
+        <mat-card>
+            <mat-card-title>
+                <div class="col-12 row">
+                    <label class="col-auto">大小頭</label> 
+                    <button mat-raised-button color="primary" (click)="addData();Count()" class="col-1">
+                        新增<i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div [class]="TableOrList ? 'col-auto' : 'col-auto mt-2'" *ngFor="let Cost of CostList">
+                        {{Cost.display}}
+                        <input type="number" [(ngModel)]="Cost.value" (ngModelChange)="Count()">
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <!-- Table -->
+                <div class="col-12 row d-flex justify-content-center m-0" *ngIf="TableOrList">
+                    <!-- Header -->
+                    <div class="col-12 row m-0">
+                        <div class="col text-center title">場次/姓名</div>
+                        <div *ngFor="let Name of userNames" class="col text-center title">{{Name.Name}}</div>
+                    </div>
+                    <div class="Body">
+                        <!-- Boody -->
+                        <div *ngFor="let levelData of allData;let i = index" class="col-12 row">
+                            <div class="col d-flex align-items-center justify-content-center">
+                                <span class="title">第{{i+1}}筆</span>
+                                <button mat-raised-button class="mt-2 ms-3" color="primary" (click)="deleteData(i);Count()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div *ngFor="let level of allData[i].levelData" class="col text-center">
+                                <mat-form-field appearance="outline">
+                                    <!-- <mat-label>Level</mat-label> -->
+                                    <mat-select [(ngModel)]="level.level" (ngModelChange)="Count()">
+                                    <mat-option *ngFor="let select of levelSelect" [value]="select.value">
+                                        {{select.display}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Count -->
+                    <div class="col-12 row">
+                        <div class="col text-center title">總結</div>
+                        <div *ngFor="let summary of summarys" class="col text-center title">{{summary}}</div>
+                    </div>
+                </div>
+                
+                <!-- List -->
+                <div class="col-12 row m-0" *ngIf="!TableOrList">
+                    <mat-card class="col-12 row m-0 ListBorder title" *ngFor="let Data of allData;let index = index;">
+                        第{{index+1}}筆
+                        <mat-card-content>
+                            <div *ngFor="let Name of userNames;let i = index" class="col-12 row m-0">
+                                <div class="col-3 d-flex justify-content-center align-items-center">
+                                    {{Name.Name}}
+                                </div>
+                                <mat-form-field appearance="outline" class="col-9">
+                                    <!-- <mat-label>Level</mat-label> -->
+                                    <mat-select [(ngModel)]="allData[index].levelData[i].level" (ngModelChange)="Count()">
+                                    <mat-option *ngFor="let select of levelSelect" [value]="select.value">
+                                        {{select.display}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <button mat-raised-button class="mt-2 col-12" color="primary" (click)="deleteData(index);Count()">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="col-12 row m-0 ListBorder">
+                        <mat-card-header class="title">
+                            總結
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div *ngFor="let Name of userNames;let i = index" class="col-12 row m-0 mt-2">
+                                <div class="col-3 d-flex justify-content-center align-items-center title">
+                                    {{Name.Name}}
+                                </div>
+                                <div class="col-9 title">
+                                    {{summarys[i]}}
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<p [hidden]="true" (window:resize)="sizeCheck()" ></p>

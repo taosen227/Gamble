@@ -1,0 +1,103 @@
+<div class="container-fluid p-0">
+    <div class="col-12 row m-0">
+        <mat-card>
+            <mat-card-title>
+                <div class="col-12 row">
+                    <label class="col-auto">張數</label> 
+                    <button mat-raised-button color="primary" (click)="addData();Count()" class="col-1">
+                        新增<i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div [class]="TableOrList ? 'col-auto' : 'col-auto mt-2'" *ngFor="let Cost of CostList">
+                        {{Cost.display}}
+                        <input type="number" [(ngModel)]="Cost.value" (ngModelChange)="Count()">
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <div *ngIf="TableOrList" class="col-12 row d-flex justify-content-center">
+                    <!-- Header -->
+                    <div class="col-12 row">
+                        <div class="col text-center title">場次/姓名</div>
+                        <div *ngFor="let Name of userNames" class="col text-center title">{{Name.Name}}</div>
+                    </div>
+                    <div class="Body">
+                        <!-- Boody -->
+                        <div *ngFor="let levelData of allData;let i = index" class="col-12 row">
+                            <div class="col d-flex align-items-center justify-content-center">
+                                <span class="title">第{{i+1}}筆</span>
+                                <button mat-raised-button class="mt-2 ms-3" color="primary" (click)="deleteData(i);Count()">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div *ngFor="let PerCard of allData[i].Data;let index = index" class="col row PercardDiv">
+                                <form class="PercardBorder">
+                                    <mat-form-field class="example-full-width">
+                                      <mat-label>未脫手張數</mat-label>
+                                      <input matInput [(ngModel)]="PerCard.cards" name="cards" (ngModelChange)="Count()">
+                                    </mat-form-field>
+                                    <mat-checkbox [(ngModel)]="PerCard.trumps" name="trumps" (ngModelChange)="Count()">脫手</mat-checkbox>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>未脫手大老二數量</mat-label>
+                                        <input matInput [(ngModel)]="PerCard.oldtwo" name="oldtwo" (ngModelChange)="Count()">
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Count -->
+                    <div class="col-12 row">
+                        <div class="col text-center title">總結</div>
+                        <div *ngFor="let summary of summarys" class="col text-center title">{{summary}}</div>
+                    </div>
+                </div>
+
+                <!-- List -->
+                <div class="col-12 row m-0" *ngIf="!TableOrList">
+                    <mat-card class="col-12 row m-0 ListBorder title" *ngFor="let Data of allData;let index = index;">
+                        第{{index+1}}筆
+                        <mat-card-content>
+                            <div *ngFor="let Name of userNames;let i = index" class="col-12 row m-0">
+                                <div class="col-3 d-flex justify-content-center align-items-center">
+                                    {{Name.Name}}
+                                </div>
+                                <div class="col row PercardDiv">
+                                    <form class="PercardBorder">
+                                        <mat-form-field class="example-full-width">
+                                          <mat-label>未脫手張數</mat-label>
+                                          <input matInput [(ngModel)]="allData[index].Data[i].cards" name="cards" (ngModelChange)="Count()">
+                                        </mat-form-field>
+                                        <mat-checkbox [(ngModel)]="allData[index].Data[i].trumps" name="trumps" (ngModelChange)="Count()">脫手</mat-checkbox>
+                                        <mat-form-field class="example-full-width mt-3">
+                                            <mat-label>未脫手大老二數量</mat-label>
+                                            <input matInput [(ngModel)]="allData[index].Data[i].oldtwo" name="oldtwo" (ngModelChange)="Count()">
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+                            </div>
+                            <button mat-raised-button class="mt-2 col-12" color="primary" (click)="deleteData(index);Count()">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="col-12 row m-0 ListBorder">
+                        <mat-card-header class="title">
+                            總結
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div *ngFor="let Name of userNames;let i = index" class="col-12 row m-0 mt-2">
+                                <div class="col-3 d-flex justify-content-center align-items-center title">
+                                    {{Name.Name}}
+                                </div>
+                                <div class="col-9 title">
+                                    {{summarys[i]}}
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<p [hidden]="true" (window:resize)="sizeCheck()" ></p>
