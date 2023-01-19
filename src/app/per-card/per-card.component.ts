@@ -107,38 +107,50 @@ export class PerCardComponent implements OnInit {
     this.summarys = [0, 0, 0, 0];
     this.allData.forEach((data) => {
       data.Data.forEach((Percard) => {
-        if (Percard.cards != 0) {
+        console.log(Percard,index)
+        if(Percard.cards != 0)
+        {
           let Money = Percard.cards;
-          Money = Percard.oldtwo != 0 ? Money * Percard.oldtwo : Money;
+          Money = Percard.oldtwo >= 1 ? Money * (Percard.oldtwo + 1) : Money;
           Money = Percard.cards >= 10 ? Money * 2 : Money;
           this.summarys[index] -= Money * this.CostList[0].value;
         }
-        if (Percard.trumps) {
-          let Count = 0;
-          let Current = 0;
-          for (let Num = 0; Num < 4; Num++) {
-            if (Num != index) {
-              let Money = this.allData[i].Data[Num].cards;
-              Money =
-                this.allData[i].Data[Num].oldtwo != 0
-                  ? Money * this.allData[i].Data[Num].oldtwo
-                  : Money;
-              Money = this.allData[i].Data[Num].cards >= 10 ? Money * 2 : Money;
-              Count += Money;
-            } else {
-              Current = this.allData[i].Data[Num].cards;
-              Current =
-                this.allData[i].Data[Num].oldtwo != 0
-                  ? Current * this.allData[i].Data[Num].oldtwo
-                  : Current;
-              Current =
-                this.allData[i].Data[Num].cards >= 10 ? Current * 2 : Current;
-            }
-          }
-          Percard.cards = 0;
-          this.summarys[index] += Current * this.CostList[0].value;
-          this.summarys[index] += Count * this.CostList[0].value;
+        if(Percard.trumps)
+        {
+          
         }
+        // if (Percard.cards != 0) {
+        //   let Money = Percard.cards;
+        //   Money = Percard.oldtwo != 0 ? Money * Percard.oldtwo : Money;
+        //   Money = Percard.cards >= 10 ? Money * 2 : Money;
+        //   this.summarys[index] -= Money * this.CostList[0].value;
+        // }
+        // if (Percard.trumps) {
+        //   let Count = 0;
+        //   let Current = 0;
+        //   for (let Num = 0; Num < 4; Num++) {
+        //     if (Num != index) {
+        //       let Money = this.allData[i].Data[Num].cards;
+        //       Money =
+        //         this.allData[i].Data[Num].oldtwo != 0
+        //           ? Money * this.allData[i].Data[Num].oldtwo
+        //           : Money;
+        //       Money = this.allData[i].Data[Num].cards >= 10 ? Money * 2 : Money;
+        //       Count += Money;
+        //     } else {
+        //       Current = this.allData[i].Data[Num].cards;
+        //       Current =
+        //         this.allData[i].Data[Num].oldtwo != 0
+        //           ? Current * this.allData[i].Data[Num].oldtwo
+        //           : Current;
+        //       Current =
+        //         this.allData[i].Data[Num].cards >= 10 ? Current * 2 : Current;
+        //     }
+        //   }
+        //   Percard.cards = 0;
+        //   this.summarys[index] += Current * this.CostList[0].value;
+        //   this.summarys[index] += Count * this.CostList[0].value;
+        // }
         index++;
       });
       index = 0;
