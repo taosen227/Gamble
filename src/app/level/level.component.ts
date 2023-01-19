@@ -1,9 +1,11 @@
+import { JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { EnterNameComponent } from '../Components/enter-name/enter-name.component';
 import { Name } from '../Interfaces/EnterName';
 @Component({
@@ -47,28 +49,36 @@ export class LevelComponent implements OnInit {
       display: '小頭',
     },
   ];
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog,
+    private router:Router) {}
 
   ngOnInit(): void {
     this.sizeCheck();
-    if (this.test) {
-      this.userNames = [
-        {
-          Name: '1',
-        },
-        {
-          Name: '2',
-        },
-        {
-          Name: '3',
-        },
-        {
-          Name: '4',
-        },
-      ];   
-    } else {
-      this.OpenEnterName();
+    if(localStorage.getItem('LevelData') != null){
+      this.allData = JSON.parse(localStorage.getItem('LevelData')||"");
+      this.userNames = JSON.parse(localStorage.getItem('LevelUserName')||"");
+      this.summarys = JSON.parse(localStorage.getItem('LevelSummary')||"");
     }
+    else{
+      if (this.test) {
+        this.userNames = [
+          {
+            Name: '1',
+          },
+          {
+            Name: '2',
+          },
+          {
+            Name: '3',
+          },
+          {
+            Name: '4',
+          },
+        ];   
+      } else {
+        this.OpenEnterName();
+      }
+    } 
   }
 
   sizeCheck(): void {
@@ -89,7 +99,6 @@ export class LevelComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.userNames = result;
-      console.log(result);
     });
   }
 
@@ -139,6 +148,16 @@ export class LevelComponent implements OnInit {
       });
       index = 0;
     });
+    localStorage.setItem('LevelUserName',JSON.stringify(this.userNames))
+    localStorage.setItem('LevelData',JSON.stringify(this.allData))
+    localStorage.setItem('LevelSummary',JSON.stringify(this.summarys))
+  }
+
+  RemoveData(){
+    localStorage.removeItem('LevelUserName');
+    localStorage.removeItem('LevelData');
+    localStorage.removeItem('LevelSummary');
+    this.router.navigateByUrl("dashboard");
   }
 }
 interface Level {

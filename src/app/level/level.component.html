@@ -11,6 +11,7 @@
                         {{Cost.display}}
                         <input type="number" [(ngModel)]="Cost.value" (ngModelChange)="Count()">
                     </div>
+                    <button mat-raised-button color="primary" class="col-1" (click)="RemoveData()">清除資料</button>
                 </div>
             </mat-card-title>
             <mat-card-content>

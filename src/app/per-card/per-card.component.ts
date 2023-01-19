@@ -4,6 +4,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { EnterNameComponent } from '../Components/enter-name/enter-name.component';
 import { Name } from '../Interfaces/EnterName';
 
@@ -16,7 +17,7 @@ export class PerCardComponent implements OnInit {
   userNames: Name[] = [];
   allData: PerCards[] = [];
   test: boolean = false;
-  TableOrList:boolean = true;
+  TableOrList: boolean = true;
   summarys: number[] = [0, 0, 0, 0];
   CostList: Cost[] = [
     {
@@ -25,27 +26,33 @@ export class PerCardComponent implements OnInit {
       display: '每張',
     },
   ];
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
     this.sizeCheck();
-    if (this.test) {
-      this.userNames = [
-        {
-          Name: '1',
-        },
-        {
-          Name: '2',
-        },
-        {
-          Name: '3',
-        },
-        {
-          Name: '4',
-        },
-      ];
+    if (localStorage.getItem('PercardData') != null) {
+      this.allData = JSON.parse(localStorage.getItem('PercardData') || '');
+      this.userNames = JSON.parse(localStorage.getItem('PercardUserName') || '');
+      this.summarys = JSON.parse(localStorage.getItem('PercardSummary') || '');
     } else {
-      this.OpenEnterName();
+      if (this.test) {
+        this.userNames = [
+          {
+            Name: '1',
+          },
+          {
+            Name: '2',
+          },
+          {
+            Name: '3',
+          },
+          {
+            Name: '4',
+          },
+        ];
+      } else {
+        this.OpenEnterName();
+      }
     }
   }
 
@@ -68,22 +75,22 @@ export class PerCardComponent implements OnInit {
         {
           cards: 1,
           oldtwo: 0,
-          trumps:false
+          trumps: false,
         },
         {
           cards: 1,
           oldtwo: 0,
-          trumps:false
+          trumps: false,
         },
         {
           cards: 1,
           oldtwo: 0,
-          trumps:false
+          trumps: false,
         },
         {
           cards: 1,
           oldtwo: 0,
-          trumps:false
+          trumps: false,
         },
       ],
     };
@@ -106,20 +113,26 @@ export class PerCardComponent implements OnInit {
           Money = Percard.cards >= 10 ? Money * 2 : Money;
           this.summarys[index] -= Money * this.CostList[0].value;
         }
-        if (Percard.trumps){
+        if (Percard.trumps) {
           let Count = 0;
           let Current = 0;
-          for(let Num = 0 ; Num < 4 ; Num++){
-            if(Num != index){
+          for (let Num = 0; Num < 4; Num++) {
+            if (Num != index) {
               let Money = this.allData[i].Data[Num].cards;
-              Money = this.allData[i].Data[Num].oldtwo != 0 ? Money * this.allData[i].Data[Num].oldtwo : Money;
+              Money =
+                this.allData[i].Data[Num].oldtwo != 0
+                  ? Money * this.allData[i].Data[Num].oldtwo
+                  : Money;
               Money = this.allData[i].Data[Num].cards >= 10 ? Money * 2 : Money;
               Count += Money;
-            }
-            else{
+            } else {
               Current = this.allData[i].Data[Num].cards;
-              Current = this.allData[i].Data[Num].oldtwo != 0 ? Current * this.allData[i].Data[Num].oldtwo : Current;
-              Current = this.allData[i].Data[Num].cards >= 10 ? Current * 2 : Current;
+              Current =
+                this.allData[i].Data[Num].oldtwo != 0
+                  ? Current * this.allData[i].Data[Num].oldtwo
+                  : Current;
+              Current =
+                this.allData[i].Data[Num].cards >= 10 ? Current * 2 : Current;
             }
           }
           Percard.cards = 0;
@@ -131,19 +144,24 @@ export class PerCardComponent implements OnInit {
       index = 0;
       i++;
     });
+    localStorage.setItem('PercardUserName', JSON.stringify(this.userNames));
+    localStorage.setItem('PercardData', JSON.stringify(this.allData));
+    localStorage.setItem('PercardSummary', JSON.stringify(this.summarys));
   }
 
   sizeCheck(): void {
     if (innerWidth <= 590) {
       this.TableOrList = false;
-    }
-    else {
+    } else {
       this.TableOrList = true;
     }
   }
 
-  trumps(Session:number,index:number){
-    console.log(this.allData[Session].Data[index]);
+  RemoveData() {
+    localStorage.removeItem('PercardUserName');
+    localStorage.removeItem('PercardData');
+    localStorage.removeItem('PercardSummary');
+    this.router.navigateByUrl('dashboard');
   }
 }
 interface PerCards {
@@ -154,7 +172,7 @@ interface PerCard {
   oldtwo: number;
   trumps: boolean;
 }
-interface LevelSelect {
+interface PercardSelect {
   value: number;
   display: string;
 }
