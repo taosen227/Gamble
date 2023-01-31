@@ -1,8 +1,15 @@
 <mat-toolbar class="header">
-  <button type="button" class="me-3" mat-raised-button (click)="drawer.toggle()">
-    切換頁面
-  </button>
-  <span class="title">恭喜發財</span>
+  <div class="row d-flex align-items-center">
+    <button type="button" class="me-3 col-auto" mat-raised-button (click)="drawer.toggle()">
+      切換頁面
+    </button>
+    <span class="title col-auto">恭喜發財</span>
+    <div class="col-auto">
+      <button type="button" mat-raised-button (click)="OpenCheckSummarys()">
+        檢視目前總結
+      </button>
+    </div>
+  </div>
 </mat-toolbar>
 <mat-drawer-container class="drawer-container" autosize>
   <mat-drawer #drawer mode="side" class="sidenav container">

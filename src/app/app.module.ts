@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatStepperModule } from '@angular/material/stepper';
+import { CheckSummarysComponent } from './Components/check-summarys/check-summarys.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     LevelComponent,
     DashboardComponent,
     EnterNameComponent,
+    CheckSummarysComponent,
   ],
   imports: [
     BrowserModule,

@@ -47,4 +47,16 @@ mat-drawer {
   .ListBorder{
     border-bottom: 1px solid black;
   }
+  mat-card-title{
+    .mat-form-field-wrapper{
+      padding: 0 ;
+    }
+    .mat-form-field-flex{
+      height: 3rem;
+    }
+    .mat-form-field-infix{
+      padding: 0 !important;
+      margin-top: 0 !important;
+    }
+  }
 }

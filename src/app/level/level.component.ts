@@ -18,8 +18,9 @@ export class LevelComponent implements OnInit {
   allData: Level[] = [];
   test: boolean = false;
   TableOrList:boolean = true;
+  gambleMode:number = 0;
   summarys: number[] = [0, 0, 0, 0];
-  levelSelect: LevelSelect[] = [
+  levelSelect1: LevelSelect[] = [
     {
       value: 0,
       display: '全拿',
@@ -37,6 +38,25 @@ export class LevelComponent implements OnInit {
       display: '不來',
     },
   ];
+  levelSelect2: LevelSelect[] = [
+    {
+      value: 0,
+      display: '贏大頭',
+    },
+    {
+      value: 1,
+      display: '贏小頭',
+    },
+    {
+      value: 2,
+      display: '小頭',
+    },
+    {
+      value: 3,
+      display: '大頭',
+    },
+  ];
+  levelSelect:LevelSelect[] = [];
   CostList: Cost[] = [
     {
       id: 1,
@@ -49,6 +69,18 @@ export class LevelComponent implements OnInit {
       display: '小頭',
     },
   ];
+  gambleModeList: Cost[] = [
+    {
+      id: 1,
+      value: 1,
+      display: '全拿',
+    },
+    {
+      id: 2,
+      value: 2,
+      display: '兩家拿錢',
+    },
+  ]
   constructor(private dialog: MatDialog,
     private router:Router) {}
 
@@ -78,7 +110,8 @@ export class LevelComponent implements OnInit {
       } else {
         this.OpenEnterName();
       }
-    } 
+    }
+    this.switchMode();
   }
 
   sizeCheck(): void {
@@ -122,32 +155,70 @@ export class LevelComponent implements OnInit {
     this.allData.push(levelDatas);
   }
 
+  switchMode(){
+    if(this.gambleMode == 1){
+      this.levelSelect = this.levelSelect1;
+    }
+    if (this.gambleMode == 2){
+      this.levelSelect = this.levelSelect2;
+    }
+  }
+
   deleteData(index: number) {
     this.allData.splice(index, 1);
   }
 
   Count() {
     let index = 0;
-    let Getall:number = 0;
-    this.CostList.forEach(cost => {
-      Getall += cost.value;
-    });
     this.summarys = [0, 0, 0, 0];
-    this.allData.forEach((data) => {
-      data.levelData.forEach((Level) => {
-        this.CostList.forEach((cost) => {
-          if (cost.id == Level.level) {
-            this.summarys[index] -= cost.value;
-          }
-        });
-        if(Level.level == 0)
-        {
-          this.summarys[index] += Getall;
-        }
-        index++;
+    if(this.gambleMode == 1){
+      let Getall:number = 0;
+      this.CostList.forEach(cost => {
+        Getall += cost.value;
       });
-      index = 0;
-    });
+      this.allData.forEach((data) => {
+        data.levelData.forEach((Level) => {
+          this.CostList.forEach((cost) => {
+            if (cost.id == Level.level) {
+              this.summarys[index] -= cost.value;
+            }
+          });
+          if(Level.level == 0)
+          {
+            this.summarys[index] += Getall;
+          }
+          index++;
+        });
+        index = 0;
+      });
+    }
+    if(this.gambleMode == 2)
+    {
+      this.allData.forEach(data => {
+        data.levelData.forEach(level => {
+          switch(level.level){
+            case 0:{
+              this.summarys[index] += this.CostList[0].value;
+              break;
+            }
+            case 1:{
+              this.summarys[index] += this.CostList[1].value;
+              break;
+            }
+            case 2:{
+              this.summarys[index] -= this.CostList[1].value;
+              break;
+            }
+            case 3:{
+              this.summarys[index] -= this.CostList[0].value;
+              break;
+            }
+          }
+          index++;
+        });
+        index = 0;
+      });
+    }
     localStorage.setItem('LevelUserName',JSON.stringify(this.userNames))
     localStorage.setItem('LevelData',JSON.stringify(this.allData))
     localStorage.setItem('LevelSummary',JSON.stringify(this.summarys))

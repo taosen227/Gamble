@@ -34,12 +34,12 @@
                                 <form class="PercardBorder">
                                     <mat-form-field class="example-full-width">
                                       <mat-label>未脫手張數</mat-label>
-                                      <input matInput [(ngModel)]="PerCard.cards" name="cards" (ngModelChange)="Count()" [disabled]="PerCard.trumps">
+                                      <input matInput [(ngModel)]="PerCard.cards" name="cards" type="number" (ngModelChange)="Count()" [disabled]="PerCard.trumps">
                                     </mat-form-field>
                                     <mat-checkbox [(ngModel)]="PerCard.trumps" name="trumps" (ngModelChange)="Count()">脫手</mat-checkbox>
                                     <mat-form-field class="example-full-width">
                                         <mat-label>未脫手大老二數量</mat-label>
-                                        <input matInput [(ngModel)]="PerCard.oldtwo" name="oldtwo" (ngModelChange)="Count()" [disabled]="PerCard.trumps">
+                                        <input matInput [(ngModel)]="PerCard.oldtwo" name="oldtwo" type="number" (ngModelChange)="Count()" [disabled]="PerCard.trumps">
                                     </mat-form-field>
                                 </form>
                             </div>
@@ -65,12 +65,12 @@
                                     <form class="PercardBorder">
                                         <mat-form-field class="example-full-width">
                                           <mat-label>未脫手張數</mat-label>
-                                          <input matInput [(ngModel)]="allData[index].Data[i].cards" name="cards" (ngModelChange)="Count()">
+                                          <input matInput type="number" [(ngModel)]="allData[index].Data[i].cards" name="cards" (ngModelChange)="Count()">
                                         </mat-form-field>
                                         <mat-checkbox [(ngModel)]="allData[index].Data[i].trumps" name="trumps" (ngModelChange)="Count()">脫手</mat-checkbox>
                                         <mat-form-field class="example-full-width mt-3">
                                             <mat-label>未脫手大老二數量</mat-label>
-                                            <input matInput [(ngModel)]="allData[index].Data[i].oldtwo" name="oldtwo" (ngModelChange)="Count()">
+                                            <input matInput type="number" [(ngModel)]="allData[index].Data[i].oldtwo" name="oldtwo" (ngModelChange)="Count()">
                                         </mat-form-field>
                                     </form>
                                 </div>

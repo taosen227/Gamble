@@ -105,54 +105,38 @@ export class PerCardComponent implements OnInit {
     let index = 0;
     let i = 0;
     this.summarys = [0, 0, 0, 0];
+    let everyRound:number[] = [];
     this.allData.forEach((data) => {
+      let trump:number = 5;
       data.Data.forEach((Percard) => {
-        console.log(Percard,index)
-        if(Percard.cards != 0)
-        {
-          let Money = Percard.cards;
-          Money = Percard.oldtwo >= 1 ? Money * (Percard.oldtwo + 1) : Money;
-          Money = Percard.cards >= 10 ? Money * 2 : Money;
-          this.summarys[index] -= Money * this.CostList[0].value;
-        }
+        let Money = Percard.cards;
         if(Percard.trumps)
         {
-          
+          Percard.cards = 0;
+          trump = index;
         }
-        // if (Percard.cards != 0) {
-        //   let Money = Percard.cards;
-        //   Money = Percard.oldtwo != 0 ? Money * Percard.oldtwo : Money;
-        //   Money = Percard.cards >= 10 ? Money * 2 : Money;
-        //   this.summarys[index] -= Money * this.CostList[0].value;
-        // }
-        // if (Percard.trumps) {
-        //   let Count = 0;
-        //   let Current = 0;
-        //   for (let Num = 0; Num < 4; Num++) {
-        //     if (Num != index) {
-        //       let Money = this.allData[i].Data[Num].cards;
-        //       Money =
-        //         this.allData[i].Data[Num].oldtwo != 0
-        //           ? Money * this.allData[i].Data[Num].oldtwo
-        //           : Money;
-        //       Money = this.allData[i].Data[Num].cards >= 10 ? Money * 2 : Money;
-        //       Count += Money;
-        //     } else {
-        //       Current = this.allData[i].Data[Num].cards;
-        //       Current =
-        //         this.allData[i].Data[Num].oldtwo != 0
-        //           ? Current * this.allData[i].Data[Num].oldtwo
-        //           : Current;
-        //       Current =
-        //         this.allData[i].Data[Num].cards >= 10 ? Current * 2 : Current;
-        //     }
-        //   }
-        //   Percard.cards = 0;
-        //   this.summarys[index] += Current * this.CostList[0].value;
-        //   this.summarys[index] += Count * this.CostList[0].value;
-        // }
+        if(Percard.cards != 0)
+        {
+          if(Percard.oldtwo != 0)
+          {
+            Money *= Percard.oldtwo + 1;
+          }
+          if(Percard.cards >= 10)
+          {
+            Money *= 2;
+          }
+          Money = Money * this.CostList[0].value;
+          everyRound.push(Money);
+        }
+        this.summarys[index] -= Money;
         index++;
       });
+      if(trump < 4 ){
+        everyRound.forEach(every => {
+          this.summarys[trump] += every;
+        });
+        everyRound = [];
+      }
       index = 0;
       i++;
     });
